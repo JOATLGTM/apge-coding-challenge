@@ -16,24 +16,22 @@ module.exports.run = function (csv) {
 	Write your code below the comment.
 */
 
-	let rows = csv.split("\n");
-	let headers = rows[0].split(",");
+	if (!csv || csv.trim() === "") return [];
 
-	let result = [];
+	const rows = csv.split("\n").filter((row) => row.trim() !== "");
 
-	for (let i = 1; i < rows.length; i++) {
-		let values = rows[i].split(",");
-		let rowObject = {};
+	if (rows.length === 0) return [];
 
-		for (let j = 0; j < headers.length; j++) {
-			let headerName = headers[j];
-			let value = values[j];
+	const headers = rows[0].split(",");
 
-			rowObject[headerName] = value;
-		}
+	// Transform data rows into objects using functional approach
+	return rows.slice(1).map((row) => {
+		const values = row.split(",");
 
-		result.push(rowObject);
-	}
-
-	return result;
+		// Create object by reducing headers with corresponding values
+		return headers.reduce((obj, header, index) => {
+			obj[header] = values[index] || ""; // Handle missing values gracefully
+			return obj;
+		}, {});
+	});
 };
