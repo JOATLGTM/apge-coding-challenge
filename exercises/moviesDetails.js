@@ -1,5 +1,5 @@
-module.exports.run = function(movies) {
-/*
+module.exports.run = async function (movies) {
+	/*
 	You are given a list of urls that will be used to search up movies.
 	Make a GET call with axios using the given urls to search each movies.
 	Then return an array of objects with the properties 'Title, Year, Genre' of each movie in the same order it came in as.
@@ -17,4 +17,33 @@ module.exports.run = function(movies) {
 	Write your code below the comment.
 */
 
+	const axios = require("axios");
+
+	let movieResults = [];
+
+	for (let i = 0; i < movies.length; i++) {
+		let url = movies[i];
+
+		try {
+			const response = await axios.get(url);
+
+			let movieData = response.data;
+
+			let movieInfo = {
+				Title: movieData.Title,
+				Year: movieData.Year,
+				Genre: movieData.Genre,
+			};
+
+			movieResults.push(movieInfo);
+		} catch (error) {
+			movieResults.push({
+				Title: "Error",
+				Year: "Error",
+				Genre: "Error",
+			});
+		}
+	}
+
+	return movieResults;
 };
