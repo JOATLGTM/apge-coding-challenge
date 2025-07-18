@@ -17,27 +17,20 @@ module.exports.run = function (x, y) {
 		[1, 3, -3, 0],
 	];
 
+	// Validate bounds to prevent errors
+	const maxRow = Math.min(y, twoDArray.length - 1);
+	const maxCol = x >= 0 ? x : -1;
+
 	let sum = 0;
 
-	// edge case if x or y is negative
-	if (x < 0 || y < 0) {
-		return 0;
-	}
+	// Iterate through rows from 0 to y (inclusive)
+	for (let row = 0; row <= maxRow; row++) {
+		// Iterate through columns from 0 to x (inclusive)
+		const currentRow = twoDArray[row];
+		const maxColForThisRow = Math.min(maxCol, currentRow.length - 1);
 
-	for (let row = 0; row <= y; row++) {
-		// Make sure this column exists in this row
-		if (row >= twoDArray.length) {
-			break;
-		}
-
-		// Add this number to our sum
-		for (let col = 0; col <= x; col++) {
-			if (col >= twoDArray[row].length) {
-				break;
-			}
-
-			let currentNumber = twoDArray[row][col];
-			sum += currentNumber;
+		for (let col = 0; col <= maxColForThisRow; col++) {
+			sum += currentRow[col];
 		}
 	}
 
